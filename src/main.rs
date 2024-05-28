@@ -53,6 +53,10 @@
 
 //=============================================================================
 
+// I am importing my on module (which is the file lib.rs)
+
+use mini_grep_functions::parse_config;
+
 /*
     This lines tells Rust that you want to use the "env" module,
     which is part of "std". "std" is the standard library
@@ -98,8 +102,12 @@ fn main() {
     // index 1: "pizza"
     // index 2: "food_list.txt"
 
-    let query: &String = &args[1];
-    let file_path: &String = &args[2];
+    // parse_config returns a tuple with two values that are of the type
+    // &str
+    // What is happening here is called destructuring
+    // Each value in the tuple that is returned by the parse_config function
+    // is being assigned to the variables on the left.
+    let (query, file_path): (&str, &str) = parse_config(&args);  
 
     println!("Searching for {}", query);
     println!("In the file {}", file_path);
