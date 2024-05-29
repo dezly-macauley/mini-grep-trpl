@@ -55,7 +55,7 @@
 
 // I am importing my on module (which is the file lib.rs)
 
-use mini_grep_functions::parse_config;
+// use mini_grep_functions::parse_config;
 
 /*
     This lines tells Rust that you want to use the "env" module,
@@ -107,19 +107,56 @@ fn main() {
     // What is happening here is called destructuring
     // Each value in the tuple that is returned by the parse_config function
     // is being assigned to the variables on the left.
-    let (query, file_path): (&str, &str) = parse_config(&args);  
+    
+    let search_details = SearchDetails::new(&args);
+    // let search_details = parse_config(&args);  
 
-    println!("Searching for {}", query);
-    println!("In the file {}", file_path);
+    println!("Searching for {}", search_details.search_query);
+    println!("In the file {}", search_details.file_path);
 
     // NOTE: Step 3: Create a variable that will read the contents of the file
 
     // If the file does not exist the program will panic, crash, 
     // and display and error message.
-    let contents: String = fs::read_to_string(file_path)
+    let contents: String = fs::read_to_string(search_details.file_path)
         .expect("The file you want to search either has an error,
         or does not exist");
 
     println!("With text:\n{contents}");
+
+}
+
+struct SearchDetails{
+    search_query: String,
+    file_path: String,
+}
+
+impl SearchDetails {
+    
+    // This will allow you to create new instances of the struct using 
+    // a custom "new"
+    
+    // E.g. let search_details = SearchDetails::new(&args);
+
+    fn new(args: &[String]) -> SearchDetails {
+
+        let search_query: String = args[1].clone();
+        let file_path: String = args[2].clone();
+     
+        SearchDetails { search_query, file_path }
+
+        // This function then creates a tuple that contains string slices
+        // When creating a function in Rust that would return &String 
+        // and work fine, it is actually better to have this function return &str,
+        // using the .as_str conversion.
+        // This is because &str is more flexible and lightweight than &String
+        // let search_details: (&str, &str) = (search_query.as_str(), file_path.as_str());
+
+        // In Rust the last line of a function that does not have a ; 
+        // is implicitly returned. If you wanted to explicitly return the do this:
+        // return search_details;
+        // search_details
+
+    }
 
 }

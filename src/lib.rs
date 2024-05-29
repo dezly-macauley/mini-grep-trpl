@@ -1,3 +1,4 @@
+
 // This function accepts the arguement:
 // let args: Vec<String> = env::args().collect(); 
 // This is what reads all of the command-line arguements and saves them into
@@ -18,21 +19,3 @@
 // the function more flexible
 // You can pass either the entire vector or just a part of it.
 
-pub fn parse_config(args: &[String]) -> (&str, &str) {
-
-    let search_query: &String = &args[1];
-    let file_path: &String = &args[2];
-   
-    // This function then creates a tuple that contains string slices
-    // When creating a function in Rust that would return &String 
-    // and work fine, it is actually better to have this function return &str,
-    // using the .as_str conversion.
-    // This is because &str is more flexible and lightweight than &String
-    let search_details: (&str, &str) = (search_query.as_str(), file_path.as_str());
-
-    // In Rust the last line of a function that does not have a ; 
-    // is implicitly returned. If you wanted to explicitly return the do this:
-    // return search_details;
-    search_details
-
-}
